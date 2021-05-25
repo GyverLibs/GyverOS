@@ -1,0 +1,35 @@
+#######################################
+# Syntax Coloring Map For GyverOS
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+GyverOS	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+tick	KEYWORD2
+attach	KEYWORD2
+detach	KEYWORD2
+setPeriod	KEYWORD2
+start	KEYWORD2
+stop	KEYWORD2
+exec	KEYWORD2
+getLeft	KEYWORD2
+attachLoopTime	KEYWORD2
+detachLoopTime	KEYWORD2
+getLoopTime	KEYWORD2
+getMaxLoopTime	KEYWORD2
+getLoad	KEYWORD2
+enableLoad	KEYWORD2
+disableLoad	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+OS_BENCH	LITERAL1
