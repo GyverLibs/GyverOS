@@ -93,6 +93,11 @@ public:
         tmrs[num] = millis();
     }
     
+    // перезапустить задачу
+    void restart(int num) {
+        start(num);
+    }
+    
     // остановить задачу
     void stop(int num) {
         if (num >= _AMOUNT) return;

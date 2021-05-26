@@ -17,6 +17,7 @@ attach	KEYWORD2
 detach	KEYWORD2
 setPeriod	KEYWORD2
 start	KEYWORD2
+restart	KEYWORD2
 stop	KEYWORD2
 exec	KEYWORD2
 getLeft	KEYWORD2
