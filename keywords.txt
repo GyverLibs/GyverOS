@@ -15,6 +15,9 @@ GyverOS	KEYWORD1
 tick	KEYWORD2
 attach	KEYWORD2
 detach	KEYWORD2
+attachHook	KEYWORD2
+detachHook	KEYWORD2
+criticalFlagSet	KEYWORD2
 setPeriod	KEYWORD2
 start	KEYWORD2
 restart	KEYWORD2
@@ -34,3 +37,5 @@ disableLoad	KEYWORD2
 #######################################
 
 OS_BENCH	LITERAL1
+TASK_STOP	LITERAL1
+CRITICAL_FLAG_KILL	LITERAL1
