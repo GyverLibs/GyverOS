@@ -100,6 +100,8 @@ public:
 			hookTaskStop[num]();
 		
         callbacks[num] = NULL;
+	hookTaskStop[num] = NULL;
+	criticalFlags[num] = false;
     }
 	
 	// подключить функцию перехватчика
