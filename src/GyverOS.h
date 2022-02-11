@@ -24,6 +24,19 @@
 // раскомментировать для использования бенчмарка
 //#define OS_BENCH
 
+const uint32_t TASK_STOP = 0; // Перехватчик события закрытия задачи. Если задача прекращается, то будет выполнено действие и задача будет остановлена.
+
+const uint32_t CRITICAL_FLAG_KILL = 1; 
+
+/* Глобальный перехватчик события закрытия задачи с критическим флагом.
+
+   Чтобы перехватчик работал, должны быть соблюдены следующие условия:
+    1. При создания перехватчика с событием CRITICAL_FLAG_KILL (1), номер задачи должен быть -1!
+    2. Флаг критической задачи работает только при наличии перехватчика, иначе смысла от него не будет.
+
+   При наличии флага и обработчика, при попытке низкоуровневой остановки задачи она не будет остановлена, но будет вызван обработчик.
+*/
+
 template < uint16_t _AMOUNT >
 class GyverOS {
 public:
@@ -76,8 +89,49 @@ public:
     // отключить функцию обработчик задачи
     void detach(int num) {
         if (num >= _AMOUNT) return;
+		
+		if (criticalFlags[num] == true && criticalFlagHandler != NULL)
+		{
+			criticalFlagHandler();
+			return;
+		}
+		
+		if (hookTaskStop[num] != NULL)
+			hookTaskStop[num]();
+		
         callbacks[num] = NULL;
+	hookTaskStop[num] = NULL;
+	criticalFlags[num] = false;
     }
+	
+	// подключить функцию перехватчика
+	void attachHook(int num, uint32_t event, void (*hookHandler)()) {
+		if (num >= _AMOUNT || num != -1) return;
+		
+		switch (event) {
+			case TASK_STOP:
+				if (num >= _AMOUNT && num < 0) return;
+				hookTaskStop[num] = NULL;
+			break;
+			
+			case CRITICAL_FLAG_KILL:
+				if (num >= 0 || num != -1) return;
+				criticalFlagHandler = event;
+			break;
+		}
+	}
+	
+	// отключить функцию перехватчика
+	void detachHook(int num) {
+		if (num >= _AMOUNT) return;
+		hookTaskStop[num] = NULL;
+	}
+	
+	// флаг критической задачи
+	void criticalFlagSet(int num, bool critical) {
+		if (num >= _AMOUNT) return;
+		criticalFlags[num] = critical;
+	}
     
     // установить период для задачи
     void setPeriod(int num, uint32_t prd) {
@@ -184,8 +238,11 @@ public:
 
 private:
     void (*callbacks[_AMOUNT])() = {};
+	void (*hookTaskStop[_AMOUNT])() = {};
     uint32_t tmrs[_AMOUNT], prds[_AMOUNT], loopTime = 0, loopTimeMax = 0;
     bool states[_AMOUNT];
+	bool criticalFlags[_AMOUNT];
+	void (*criticalFlagHandler)();
 #ifdef OS_BENCH
     uint32_t loadP = 0, us = 0, loadTmr = 0, loadSum = 0;
     int load = 0, loopTimeNum = -1;
