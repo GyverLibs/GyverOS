@@ -16,13 +16,17 @@
 
     Версии:
     v1.0 - релиз
+    v1.1 - добавил микросекундный режим
 */
 
-#ifndef GyverOS_h
-#define GyverOS_h
+#ifndef _GyverOS_h
+#define _GyverOS_h
 
-// раскомментировать для использования бенчмарка
-//#define OS_BENCH
+#ifndef OS_MICROS
+#define OS_TIME() millis()
+#else
+#define OS_TIME() micros()
+#endif
 
 template < uint16_t _AMOUNT >
 class GyverOS {
@@ -31,7 +35,7 @@ public:
     void tick() {    
         #ifdef OS_BENCH
         if (loadP > 0) {
-            if (millis() - loadTmr >= loadP) {
+            if (OS_TIME() - loadTmr >= loadP) {
                 loadTmr += loadP;
                 load = (loadSum / 10ul) / loadP;  // (loadSum / 1000) / loadP * 100
                 loadSum = 0;
@@ -39,11 +43,13 @@ public:
             us = micros();
         }
         #endif
-
-        bool flag = 0;    
+        
+        #ifdef OS_BENCH
+        bool flag = 0; 
+        #endif
         for (int i = 0; i < _AMOUNT; i++) {
             if (callbacks[i] && states[i]) {   
-                uint32_t left = millis() - tmrs[i];
+                uint32_t left = OS_TIME() - tmrs[i];
                 if (prds[i] == 0 || left >= prds[i]) {					
                     if (prds[i] > 0) tmrs[i] += prds[i] * (left / prds[i]);
                     #ifdef OS_BENCH
@@ -55,8 +61,8 @@ public:
                         loopTime = micros() - loopTime;
                         if (loopTime > loopTimeMax) loopTimeMax = loopTime;
                     }
-                    #endif
                     flag = 1;
+                    #endif
                 }
             }
         }
@@ -83,14 +89,14 @@ public:
     void setPeriod(int num, uint32_t prd) {
         if (num >= _AMOUNT) return;
         prds[num] = prd;
-        tmrs[num] = millis();
+        tmrs[num] = OS_TIME();
     }
     
     // запустить задачу
     void start(int num) {
         if (num >= _AMOUNT) return;
         states[num] = 1;
-        tmrs[num] = millis();
+        tmrs[num] = OS_TIME();
     }
     
     // перезапустить задачу
@@ -113,10 +119,10 @@ public:
     // получить время до ближайшей задачи
     uint32_t getLeft() {
         uint32_t nearPrd = UINT32_MAX;
-        uint32_t tm;
+        uint32_t tm = 0;
         for (int i = 0; i < _AMOUNT; i++) {
             if (callbacks[i] && states[i]) {
-                uint32_t tm = prds[i] + tmrs[i] - millis();
+                tm = prds[i] + tmrs[i] - OS_TIME();
                 nearPrd = min(nearPrd, tm);     
             }
         }
@@ -170,7 +176,7 @@ public:
     void enableLoad(uint32_t loadp = 1000) {
         #ifdef OS_BENCH
         loadP = loadp;
-        loadTmr = millis();
+        loadTmr = OS_TIME();
         loadSum = 0;
         #endif
     }

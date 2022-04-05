@@ -7,6 +7,8 @@
 #######################################
 
 GyverOS	KEYWORD1
+OS_BENCH	KEYWORD1
+OS_MICROS	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -32,5 +34,3 @@ disableLoad	KEYWORD2
 #######################################
 # Constants (LITERAL1)
 #######################################
-
-OS_BENCH	LITERAL1
