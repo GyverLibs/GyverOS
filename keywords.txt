@@ -14,6 +14,7 @@ OS_MICROS	KEYWORD1
 # Methods and Functions (KEYWORD2)
 #######################################
 
+setMicros	KEYWORD2
 tick	KEYWORD2
 attach	KEYWORD2
 detach	KEYWORD2

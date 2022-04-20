@@ -17,25 +17,25 @@
     Версии:
     v1.0 - релиз
     v1.1 - добавил микросекундный режим
+    v1.2 - внёс микросекундный режим в класс
 */
 
 #ifndef _GyverOS_h
 #define _GyverOS_h
 
-#ifndef OS_MICROS
-#define OS_TIME() millis()
-#else
-#define OS_TIME() micros()
-#endif
-
 template < uint16_t _AMOUNT >
 class GyverOS {
 public:
+    // включить микросекундный режим (true)
+    void setMicros(bool mode) {
+        usMode = mode;
+    }
+    
     // тикер. Вызывать как можно чаще
     void tick() {    
         #ifdef OS_BENCH
         if (loadP > 0) {
-            if (OS_TIME() - loadTmr >= loadP) {
+            if (uptime() - loadTmr >= loadP) {
                 loadTmr += loadP;
                 load = (loadSum / 10ul) / loadP;  // (loadSum / 1000) / loadP * 100
                 loadSum = 0;
@@ -49,7 +49,7 @@ public:
         #endif
         for (int i = 0; i < _AMOUNT; i++) {
             if (callbacks[i] && states[i]) {   
-                uint32_t left = OS_TIME() - tmrs[i];
+                uint32_t left = uptime() - tmrs[i];
                 if (prds[i] == 0 || left >= prds[i]) {					
                     if (prds[i] > 0) tmrs[i] += prds[i] * (left / prds[i]);
                     #ifdef OS_BENCH
@@ -89,14 +89,14 @@ public:
     void setPeriod(int num, uint32_t prd) {
         if (num >= _AMOUNT) return;
         prds[num] = prd;
-        tmrs[num] = OS_TIME();
+        tmrs[num] = uptime();
     }
     
     // запустить задачу
     void start(int num) {
         if (num >= _AMOUNT) return;
         states[num] = 1;
-        tmrs[num] = OS_TIME();
+        tmrs[num] = uptime();
     }
     
     // перезапустить задачу
@@ -122,7 +122,7 @@ public:
         uint32_t tm = 0;
         for (int i = 0; i < _AMOUNT; i++) {
             if (callbacks[i] && states[i]) {
-                tm = prds[i] + tmrs[i] - OS_TIME();
+                tm = prds[i] + tmrs[i] - uptime();
                 nearPrd = min(nearPrd, tm);     
             }
         }
@@ -176,7 +176,7 @@ public:
     void enableLoad(uint32_t loadp = 1000) {
         #ifdef OS_BENCH
         loadP = loadp;
-        loadTmr = OS_TIME();
+        loadTmr = uptime();
         loadSum = 0;
         #endif
     }
@@ -189,9 +189,19 @@ public:
     }
 
 private:
+    uint32_t uptime() {
+        return usMode ? micros() : millis();
+    }
+    
     void (*callbacks[_AMOUNT])() = {};
     uint32_t tmrs[_AMOUNT], prds[_AMOUNT], loopTime = 0, loopTimeMax = 0;
     bool states[_AMOUNT];
+    #ifdef OS_MICROS
+    bool usMode = 1;
+    #else
+    bool usMode = 0;
+    #endif
+    
 #ifdef OS_BENCH
     uint32_t loadP = 0, us = 0, loadTmr = 0, loadSum = 0;
     int load = 0, loopTimeNum = -1;

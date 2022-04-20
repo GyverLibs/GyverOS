@@ -1,4 +1,4 @@
-[![Foo](https://img.shields.io/badge/Version-1.1-brightgreen.svg?style=flat-square)](#versions)
+[![Foo](https://img.shields.io/badge/Version-1.2-brightgreen.svg?style=flat-square)](#versions)
 [![Foo](https://img.shields.io/badge/Website-AlexGyver.ru-blue.svg?style=flat-square)](https://alexgyver.ru/)
 [![Foo](https://img.shields.io/badge/%E2%82%BD$%E2%82%AC%20%D0%9D%D0%B0%20%D0%BF%D0%B8%D0%B2%D0%BE-%D1%81%20%D1%80%D1%8B%D0%B1%D0%BA%D0%BE%D0%B9-orange.svg?style=flat-square)](https://alexgyver.ru/support_alex/)
 
@@ -44,15 +44,16 @@ GyverOS<5> OS;	// указать макс. количество задач
 <a id="usage"></a>
 ## Использование
 ```cpp
-void tick();            // тикер. Вызывать как можно чаще
+void setMicros(bool mode);          // включить микросекундный режим (true)
+void tick();                        // тикер. Вызывать как можно чаще
 void attach(int num, void (*handler)(), uint32_t prd = 0);  // подключить функцию обработчик задачи
-void detach(int num);   // отключить функцию обработчик задачи
+void detach(int num);               // отключить функцию обработчик задачи
 void setPeriod(int num, uint32_t prd);  // установить период для задачи
-void start(int num);    // запустить задачу
-void restart(int num);  // перезапустить задачу
-void stop(int num);     // остановить задачу
-void exec(int num);     // вызвать задачу
-uint32_t getLeft();     // получить время до ближайшей задачи
+void start(int num);                // запустить задачу
+void restart(int num);              // перезапустить задачу
+void stop(int num);                 // остановить задачу
+void exec(int num);                 // вызвать задачу
+uint32_t getLeft();                 // получить время до ближайшей задачи
 
 // ====== БЕНЧМАРК ======
 void attachLoopTime(int num);       // подключить счётчик времени выполнения задачи и сбросить максимум
@@ -66,7 +67,6 @@ int getLoad();                      // получить загруженност
 // === ДЕФАЙНЫ НАСТРОЕК ===
 // объявлять ПЕРЕД подключением библиотеки
 #define OS_BENCH    // подключить модуль бенчмарка (тест производительности)
-#define OS_MICROS   // всё время будет считаться в микросекундах
 ```
 
 <a id="example"></a>
@@ -131,6 +131,7 @@ void f3() {
 ## Версии
 - v1.0
 - v1.1 - добавил микросекундный режим
+- v1.2 - внёс микросекундный режим в класс
 
 <a id="feedback"></a>
 ## Баги и обратная связь
