@@ -18,6 +18,7 @@
     v1.0 - релиз
     v1.1 - добавил микросекундный режим
     v1.2 - внёс микросекундный режим в класс
+    v1.2.1 - повышена стабильность
 */
 
 #ifndef _GyverOS_h
@@ -120,10 +121,13 @@ public:
     uint32_t getLeft() {
         uint32_t nearPrd = UINT32_MAX;
         uint32_t tm = 0;
+        uint32_t upt = uptime();
         for (int i = 0; i < _AMOUNT; i++) {
             if (callbacks[i] && states[i]) {
-                tm = prds[i] + tmrs[i] - uptime();
-                nearPrd = min(nearPrd, tm);     
+                tm = upt - tmrs[i];
+                if (tm >= prds[i]) tm = 0;
+                else tm = prds[i] - tm;
+                if (nearPrd > tm) nearPrd = tm;    
             }
         }
         return nearPrd;
