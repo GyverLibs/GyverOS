@@ -1,137 +1,153 @@
 This is an automatic translation, may be incorrect in some places. See sources and examples!
 
-# GyverOS
-Lightweight task manager library for Arduino
+# Gyveros
+Little Library of Tasks for Arduino
 - A light weight
-- Static selectable number of tasks
-- Ability to stop, disable and directly call tasks
-- Calculation of time to the nearest task (for sleep for this period)
-- Built-in benchmark: task execution time and processor load
-- The algorithm works on the millis() system timer
+- Static selected number of tasks
+- the possibility of stopping, disconnecting and direct calling tasks
+- Caluation of time to the nearest task (for sleeping for this period)
+- Built -in benchmark: the time of the task and the processor workload
+- the algorithm works on the system timer Millis ()
 
-### Compatibility
-Compatible with all Arduino platforms (using Arduino functions)
+## compatibility
+Compatible with all arduino platforms (used arduino functions)
 
 ## Content
-- [Install](#install)
-- [Initialization](#init)
-- [Usage](#usage)
-- [Example](#example)
-- [Versions](#versions)
-- [Bugs and feedback](#feedback)
+- [installation] (# Install)
+- [initialization] (#init)
+- [use] (#usage)
+- [Example] (# Example)
+- [versions] (#varsions)
+- [bugs and feedback] (#fedback)
 
-<a id="install"></a>
+<a id="install"> </a>
 ## Installation
-- The library can be found under the name **GyverOS** and installed via the library manager in:
-    - Arduino IDE
-    - Arduino IDE v2
-    - PlatformIO
-- [Download Library](https://github.com/GyverLibs/GyverOS/archive/refs/heads/main.zip) .zip archive for manual installation:
-    - Unzip and put in *C:\Program Files (x86)\Arduino\libraries* (Windows x64)
-    - Unzip and put in *C:\Program Files\Arduino\libraries* (Windows x32)
-    - Unpack and put in *Documents/Arduino/libraries/*
-    - (Arduino IDE) automatic installation from .zip: *Sketch/Include library/Add .ZIP library…* and specify the downloaded archive
-- Read more detailed instructions for installing libraries [here] (https://alexgyver.ru/arduino-first/#%D0%A3%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0_%D0%B1%D0%B8%D0%B1%D0%BB%D0%B8%D0%BE %D1%82%D0%B5%D0%BA)
+- The library can be found by the name ** gyveros ** and installed through the library manager in:
+    - Arduino ide
+    - Arduino ide v2
+    - Platformio
+- [download the library] (https://github.com/gyverlibs/gyveros/archive/refs/heads/main.zip) .Zip archive for manual installation:
+    - unpack and put in * C: \ Program Files (X86) \ Arduino \ Libraries * (Windows X64)
+    - unpack and put in * C: \ Program Files \ Arduino \ Libraries * (Windows X32)
+    - unpack and put in *documents/arduino/libraries/ *
+    - (Arduino id) Automatic installation from. Zip: * sketch/connect the library/add .Zip library ... * and specify downloaded archive
+- Read more detailed instructions for installing libraries [here] (https://alexgyver.ru/arduino-first/#%D0%A3%D1%81%D1%82%D0%B0%BD%D0%BE%BE%BE%BED0%B2%D0%BA%D0%B0_%D0%B1%D0%B8%D0%B1%D0%BB%D0%B8%D0%BE%D1%82%D0%B5%D0%BA)
+### Update
+- I recommend always updating the library: errors and bugs are corrected in the new versions, as well as optimization and new features are added
+- through the IDE library manager: find the library how to install and click "update"
+- Manually: ** remove the folder with the old version **, and then put a new one in its place.“Replacement” cannot be done: sometimes in new versions, files that remain when replacing are deleted and can lead to errors!
 
-<a id="init"></a>
-## Initialization
-```cpp
-GyverOS<5>OS; // specify max. number of tasks
-```
 
-<a id="usage"></a>
+<a id="init"> </a>
+## initialization
+`` `CPP
+Gyveros <5> OS;// indicate Max.The number of tasks
+`` `
+
+<a id="usage"> </a>
 ## Usage
-```cpp
-void setMicros(bool mode); // enable microsecond mode (true)
-void tick(); // ticker. Call as often as possible
-void attach(int num, void (*handler)(), uint32_t prd = 0); // connect the task handler function
-void detach(int num); // disable the task handler function
-void setPeriod(int num, uint32_tprd); // set the period for the task
-void start(int num); // run task
-void restart(int num); // restart task
-void stop(int num); // stop task
-void exec(int num); // call task
-uint32_t getLeft(); // get the time until the next task
+`` `CPP
+VOID setmicros (Bool Mode);// Turn on the microsecond mode (True)
+VOID Tick ();// ticker.Call
+Void attach (int num, void (*handler) (), uint32_t PRD = 0);// Connect the task processor function
+VOID Detach (int num);// Disable the function of the problem processor
+VOID setperiod (int num, uint32_t PRD);// set the period for the task
+VOID Start (int num);// Launch the task
+VOID RESTART (int num);// restart the task
+VOID Stop (int num);// Stop the task
+VOID Exec (int num);// Call the task
+uint32_t getleft ();// Get the time to the next task
 
-// ====== BENCHMARK ======
-void attachLoopTime(int num); // connect the task execution time counter and reset the maximum
-void detachLoopTime(); // disable the task execution time counter
-uint32_t getLoopTime(); // get the current execution time of the previously selected task in µs
-uint32_t getMaxLoopTime(); // get the maximum execution time of the previously selected task in µs
-void enableLoad(uint32_tloadp); // enable measurement of processor load for the specified period in ms
-void disableLoad(); // disable CPU utilization measurement
-int getLoad(); // get CPU usage in percent
+// ====== Benchmark ========
+Void attachlooptime (int num);// Connect the time of the time of the task and reset the maximum
+VOID Detachlooptime ();// Disconnect the time of the task of the task
+uint32_t getlooptime ();// get the current time of the previously selected task in the ISS
+uint32_t getmaxlooptime ();// Get the maximum execution time of the selected ptasks in the ISS
+VOID ENABLELOAD (Uint32_T Loadp);// Enable the measurement of the processor workshop for the specified period in MS
+VOID DISABLELOAD ();// Disable the measurement of processor workload
+int Getload ();// Get processor workload as a percentage
 
-// === DEFINE SETTINGS ===
-// declare BEFORE linking the library
-#define OS_BENCH // connect the benchmark module (performance test)
-```
+// === The defines of settings ====
+// announce before connecting the library
+#define os_bench // Connect the Benchmark module (performance test)
+`` `
 
-<a id="example"></a>
+<a id="EXAMPLE"> </a>
 ## Example
-See **examples** for other examples!
-```cpp
-// task manager demo
+The rest of the examples look at ** Examples **!
+`` `CPP
+// Demo dispatcher of tasks
 
-#include <GyverOS.h>
-GyverOS<5>OS; // specify max. number of tasks
+#include <gyveros.h>
+Gyveros <5> OS;// indicate Max.The number of tasks
 
-void setup() {
-  Serial.begin(9600);
-  pinMode(13, OUTPUT);
+VOID setup () {
+  Serial.Begin (9600);
+  Pinmode (13, output);
   
-  // connect tasks (serial number, function name, period in ms)
-  OS.attach(0, f1, 400);
-  OS.attach(1, f2, 1000);
-  OS.attach(2, f3, 200);
+  // We connect the tasks (serial number, function name, period in MS)
+  OS.TTACH (0, F1, 400);
+  OS.ATTACH (1, F2, 1000);
+  OS.TTACH (2, F3, 200);
   
-  //OS.detach(0); // disable task 0
-  //OS.setPeriod(0, 200); // change task period 0 to 200 ms
-  //OS.start(0); // start task 0
-  //OS.stop(0); // stop task 0
-  //OS.exec(0); // do task 0 now
+  //Os.detach (0);// Disable the task 0
+  //Os.Setperiod (0, 200);// Change the period of problem 0 by 200 ms
+  //Os.start(0);// Run the problem 0
+  //Os.stop(0);// Stop the problem 0
+  //OS.Exec(0);// Complete the problem 0 now
 }
 
-void loop() {
-  OS.tick(); // call as often as possible, tasks are performed here
+VOID loop () {
+  OS.Tick ();// call as often as possible, the tasks are performed here
   
-  // OS.getLeft() returns the time in ms to the nearest task
-  // at this time, you can put the MK to sleep, for example, using narcoleptic or GyverPower
-  // for example, just set delay for this time
-  delay(OS.getLeft());
+  // os.getleft () returns the time to the MS to the nearest task
+  // At this time, you can sleep MK, for example, using Narcoleptic or Gyverpower
+  // For example, just put DELAY for this time
+  Delay (os.getleft ());
 }
 
-// task handlers
-void f1() {
-  // outputs its period to the port
-  static uint32_tms;
-  Serial.println(millis() - ms);
-  ms = millis();
+// Task handlers
+VOID F1 () {
+  // takes its period to the port
+  static uint32_t ms;
+  Serial.println (Millis () - MS);
+  MS = Millis ();
 }
 
-void f2() {
-  static uint32_tms;
-  // outputs its period to the port
-  Serial.println(millis() - ms);
-  ms = millis();
+VOID F2 () {
+  static uint32_t ms;
+  // takes its period to the port
+  Serial.println (Millis () - MS);
+  MS = Millis ();
 }
 
-void f3() {
-  // outputs its period to the port and blinks the LED on D13
-  digitalWrite(13, !digitalRead(13));
-  static uint32_tms;
-  Serial.println(millis() - ms);
-  ms = millis();
+VOID F3 () {
+  // Bods its period to the port and flashes with LED on D13
+  DigitalWrite (13,! DigitalRead (13));
+  static uint32_t ms;
+  Serial.println (Millis () - MS);
+  MS = Millis ();
 }
-```
+`` `
 
-<a id="versions"></a>
-## Versions
-- v1.0
-- v1.1 - added microsecond mode
-- v1.2 - added microsecond mode to the class
+<a id="versions"> </a>
+## versions
+- V1.0
+- V1.1 - added a microsecond mode
+- v1.2 - introduced a microsecond mode in class
+- v1.2.1 - increased stability
 
-<a id="feedback"></a>
-## Bugs and feedback
-When you find bugs, create an **Issue**, or better, immediately write to the mail [alex@alexgyver.ru](mailto:alex@alexgyver.ru)
-The library is open for revision and your **Pull Request**'s!
+<a id="feedback"> </a>
+## bugs and feedback
+Create ** Issue ** when you find the bugs, and better immediately write to the mail [alex@alexgyver.ru] (mailto: alex@alexgyver.ru)
+The library is open for refinement and your ** pull Request ** 'ow!
+
+
+When reporting about bugs or incorrect work of the library, it is necessary to indicate:
+- The version of the library
+- What is MK used
+- SDK version (for ESP)
+- version of Arduino ide
+- whether the built -in examples work correctly, in which the functions and designs are used, leading to a bug in your code
+- what code has been loaded, what work was expected from it and how it works in reality
+- Ideally, attach the minimum code in which the bug is observed.Not a canvas of a thousand lines, but a minimum code
