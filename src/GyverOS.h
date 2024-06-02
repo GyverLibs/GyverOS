@@ -27,10 +27,6 @@
 template < uint16_t _AMOUNT >
 class GyverOS {
 public:
-    #ifdef OS_UPTIME_OVERFLOW
-    uint16_t uptime_overflow_qty;
-    #endif
-
     // включить микросекундный режим (true)
     void setMicros(bool mode) {
         usMode = mode;
@@ -52,15 +48,6 @@ public:
         #ifdef OS_BENCH
         bool flag = 0; 
         #endif
-
-        #ifdef OS_UPTIME_OVERFLOW
-        if (last_uptime > uptime()) {
-            ++uptime_overflow_qty;
-        }
-
-        last_uptime = uptime();
-        #endif
-
         for (int i = 0; i < _AMOUNT; i++) {
             if (callbacks[i] && states[i]) {   
                 uint32_t left = uptime() - tmrs[i];
@@ -223,10 +210,5 @@ private:
     uint32_t loadP = 0, us = 0, loadTmr = 0, loadSum = 0;
     int load = 0, loopTimeNum = -1;
 #endif
-
-#ifdef OS_UPTIME_OVERFLOW
-    uint32_t last_uptime = 0;
-#endif
-
 };
 #endif
