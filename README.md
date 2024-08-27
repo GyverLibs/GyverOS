@@ -6,6 +6,9 @@
 
 [![Foo](https://img.shields.io/badge/ПОДПИСАТЬСЯ-НА%20ОБНОВЛЕНИЯ-brightgreen.svg?style=social&logo=telegram&color=blue)](https://t.me/GyverLibs)
 
+|⚠️⚠️⚠️<br>**Появился более мощный и интересный инструмент [Looper](https://github.com/GyverLibs/Looper) - тоже диспетчер задач, но с гораздо большими возможностями**<br>⚠️⚠️⚠️|
+| --- |
+
 # GyverOS
 Библиотека лёгкого диспетчера задач для Arduino
 - Лёгкий вес
